@@ -1,0 +1,11 @@
+/*
+ * © Copyright - Lars Artmann aka. LartyHD 2019.
+ */
+
+dependencies {
+
+    jarLibs project(":spigot:$rootProject.name-Spigot-Domain")
+    compileOnly("org.spigotmc:spigot-api:${versions_spigot}")
+    testCompile("org.spigotmc:spigot-api:${versions_spigot}")
+
+}
