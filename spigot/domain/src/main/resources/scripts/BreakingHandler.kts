@@ -1,3 +1,4 @@
+import de.astride.bedwars.functions.equalsInt
 import de.astride.bedwars.functions.javaPlugin
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.cancel
 import net.darkdevelopers.darkbedrock.darkness.spigot.listener.Listener
@@ -59,8 +60,3 @@ class BreakingListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
     private fun Location.isIn(): Boolean = locations.any { it.equalsInt(block.location) }
 
 }
-
-fun Location.equalsInt(other: Location): Boolean = world.name != other.world.name ||
-        blockX != other.blockX ||
-        blockY != other.blockY ||
-        blockZ != other.blockZ
