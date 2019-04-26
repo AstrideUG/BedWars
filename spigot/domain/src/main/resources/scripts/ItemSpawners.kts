@@ -20,6 +20,7 @@ import javax.script.ScriptEngine
 
 lateinit var itemSpawners: ItemSpawners
 
+@Suppress("unused") //called by script loader
 fun hooking(engine: ScriptEngine) {
     itemSpawners = ItemSpawners(engine.javaPlugin)
 }
