@@ -1,3 +1,4 @@
+import de.astride.bedwars.functions.javaPlugin
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.cancel
 import net.darkdevelopers.darkbedrock.darkness.spigot.listener.Listener
 import org.bukkit.Location
@@ -11,15 +12,26 @@ import javax.script.ScriptEngine
 
 /**
  * @author Lars Artmann | LartyHD
+ * Created by Lars Artmann | LartyHD on 26.04.2019 00:34.
+ * Current Version: 1.0 (26.04.2019 - 26.04.2019)
+ */
+lateinit var listener: Listener
+
+/**
+ * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 25.04.2019 08:57.
- * Current Version: 1.0 (25.04.2019 - 25.04.2019)
+ * Current Version: 1.0 (25.04.2019 - 26.04.2019)
  */
 fun hooking(engine: ScriptEngine) {
-
-    val javaPlugin = engine["javaplugin"] as? JavaPlugin ?: throw RuntimeException("BreakingHandler needs a JavaPlugin")
-    BreakingListener(javaPlugin)
-
+    listener = BreakingListener(engine.javaPlugin)
 }
+
+/**
+ * @author Lars Artmann | LartyHD
+ * Created by Lars Artmann | LartyHD on 26.04.2019 00:32.
+ * Current Version: 1.0 (26.04.2019 - 26.04.2019)
+ */
+fun stop(): Unit = listener.unregister()
 
 /**
  * @author Lars Artmann | LartyHD
