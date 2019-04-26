@@ -22,6 +22,7 @@ lateinit var listener: Listener
  * Created by Lars Artmann | LartyHD on 25.04.2019 08:57.
  * Current Version: 1.0 (25.04.2019 - 26.04.2019)
  */
+@Suppress("unused") //called by script loader
 fun hooking(engine: ScriptEngine) {
     listener = BreakingListener(engine.javaPlugin)
 }
