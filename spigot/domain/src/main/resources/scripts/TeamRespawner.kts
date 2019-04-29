@@ -1,3 +1,5 @@
+import de.astride.bedwars.action.callAction
+import de.astride.bedwars.action.consume
 import de.astride.bedwars.functions.equalsInt
 import de.astride.bedwars.functions.javaPlugin
 import de.astride.bedwars.players
@@ -16,6 +18,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.plugin.java.JavaPlugin
 import javax.script.ScriptEngine
+import de.astride.bedwars.action.unregister as unregisterGroup
 
 
 /*
@@ -33,12 +36,18 @@ lateinit var listener: Listener
 @Suppress("unused") //called by script loader
 fun hooking(engine: ScriptEngine) {
 
-    val respawners: Set<TeamRespawner> = teams.map { DataTeamRespawner(it, setOf() /* TODO make it configurable */) }.toSet()
+    val respawners: Set<TeamRespawner> =
+        teams.map { DataTeamRespawner(it, setOf() /* TODO make it configurable */) }.toSet()
     listener = TeamRespawnerListener(engine.javaPlugin, TeamRespawners(respawners))
+
+    ActionHandler.register()
 
 }
 
-fun stop(): Unit = listener.unregister()
+fun stop() {
+    listener.unregister()
+    ActionHandler.unregister()
+}
 
 class TeamRespawnerListener(
     javaPlugin: JavaPlugin,
@@ -46,52 +55,25 @@ class TeamRespawnerListener(
 ) : Listener(javaPlugin) {
 
     @EventHandler
-    fun on(event: BlockBreakEvent) {
+    fun onBlockBreakEvent(event: BlockBreakEvent) {
 
         val player: Player = event.player
         val location: Location = event.block.location
 
         teamRespawners.breakRespawner(player, location)
 
-        val locationTeam = teamRespawners.getTeam(location) ?: return
+        val locationTeam: GameTeam = teamRespawners.getTeam(location) ?: return
         if (teamRespawners.hasRespawner(locationTeam)) return
 
-        val chatColor = player.team?.chatColor ?: WHITE
-        players.forEach { players ->
-            players.sendMessage(
-                "${Messages.PREFIX}$TEXT$chatColor${player.displayName}$TEXT" +
-                        " hat das Bett von " +
-                        "${locationTeam.chatColor}${locationTeam.name}$TEXT" +
-                        " abgebaut"
-            )
-            if (players.team == locationTeam) {
-                players.sendTitle("${IMPORTANT}Dein Bett")
-                players.sendSubTitle("${TEXT}wurde abgebaut")
-                players.sendTimings(0, 40, 5)
-            } else {
-                players.sendTitle("${IMPORTANT}Das Bett von")
-                players.sendSubTitle("${locationTeam.chatColor}${locationTeam.name} ${TEXT}wurde abgebaut")
-                players.sendTimings(0, 40, 5)
-            }
-        }
-//        if (locationTeam.players.size == 0) Saves.getTeamManager().removeTeam(locationTeam)
+        val mapOf = mapOf(
+            "javaPlugin" to javaPlugin,
+            "teamRespawners" to teamRespawners,
+            "player" to player,
+            "location" to location,
+            "location-team" to locationTeam
+        )
+        "team.respawner.destroyed.by".callAction(mapOf)
 
-        players.forEach { it.sendInGameScoreBoard(teamRespawners) }
-//            Saves.getCoinsAPI().addCoins(player.uniqueId, 50, Messages.getName())
-
-    }
-
-    private fun Player.sendInGameScoreBoard(teamRespawners: TeamRespawners) {
-        val displayName = "$PRIMARY${EXTRA}SERVERNAME$IMPORTANT$EXTRA.$PRIMARY${EXTRA}NET"
-        val scores = mutableSetOf<Pair<String, Int>>().apply {
-            teams.forEach { team ->
-                val s = "${team.chatColor}${team.name}"
-                val s1 = if (teamRespawners.hasRespawner(team)) "§a✔" else "§4✗"
-                val s2 = if (team.players.isEmpty()) "$DARK_GRAY${stripColor(s1)}$GRAY$s" else "$s1$s"
-                add(s2 to team.size)
-            }
-        }.toMap().toScoreboardScore().toSet()
-        sendScoreBoard(displayName, scores)
     }
 
 }
@@ -148,4 +130,53 @@ data class DataTeamRespawner(
     override val clearAllOnBreak: Boolean = true,
     override val types: Set<Material> = setOf(Material.BED_BLOCK)
 ) : TeamRespawner
+
+
+object ActionHandler {
+
+    fun register() {
+        "team.respawner.destroyed.by".consume(this) { vars ->
+
+            val teamRespawners = vars["teamRespawners"] as? TeamRespawners ?: return@consume
+            val player = vars["player"] as? Player ?: return@consume
+            val locationTeam = vars["location-team"] as? GameTeam ?: return@consume
+
+            val chatColor = player.team?.chatColor ?: WHITE
+            players.forEach { players ->
+                players.sendMessage(
+                    "${Messages.PREFIX}$TEXT$chatColor${player.displayName}$TEXT" +
+                            " hat das Bett von " +
+                            "${locationTeam.chatColor}${locationTeam.name}$TEXT" +
+                            " abgebaut"
+                )
+                if (players.team == locationTeam) {
+                    players.sendTitle("${IMPORTANT}Dein Bett")
+                    players.sendSubTitle("${TEXT}wurde abgebaut")
+                    players.sendTimings(0, 40, 5)
+                } else {
+                    players.sendTitle("${IMPORTANT}Das Bett von")
+                    players.sendSubTitle("${locationTeam.chatColor}${locationTeam.name} ${TEXT}wurde abgebaut")
+                    players.sendTimings(0, 40, 5)
+                }
+                players.sendInGameScoreBoard(teamRespawners)
+            }
+        }
+    }
+
+    fun unregister(): Unit = this.unregisterGroup()
+
+    private fun Player.sendInGameScoreBoard(teamRespawners: TeamRespawners) {
+        val displayName = "$PRIMARY${EXTRA}SERVERNAME$IMPORTANT$EXTRA.$PRIMARY${EXTRA}NET"
+        val scores = mutableSetOf<Pair<String, Int>>().apply {
+            teams.forEach { team ->
+                val s = "${team.chatColor}${team.name}"
+                val s1 = if (teamRespawners.hasRespawner(team)) "§a✔" else "§4✗"
+                val s2 = if (team.players.isEmpty()) "$DARK_GRAY${stripColor(s1)}$GRAY$s" else "$s1$s"
+                add(s2 to team.size)
+            }
+        }.toMap().toScoreboardScore().toSet()
+        sendScoreBoard(displayName, scores)
+    }
+
+}
 
