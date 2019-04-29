@@ -12,6 +12,7 @@ import javax.script.ScriptEngineManager
  * Created by Lars Artmann | LartyHD on 23.04.2019 05:47.
  * Current Version: 1.0 (23.04.2019 - 25.04.2019)
  */
+@Suppress("unused") //Main class of the plugin
 class BedWars : DarkPlugin() {
 
     override fun onLoad(): Unit = onLoad {
