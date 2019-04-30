@@ -22,9 +22,9 @@ fun String.callAction(vars: Map<String, Any?>) {
     val separator = '.'
     val tokens = split(separator)
     var last = ""
-    val all = tokens.map { last + separator + it.apply { last = this } }.mapNotNull { actions[this] }
+    val all = tokens.map { last + separator + it.apply { last = this } }.mapNotNull { actions[this.toLowerCase()] }
 
-    val map = vars + mapOf("id" to this)
+    val map = vars + mapOf("id" to this.toLowerCase())
     all.forEach { it.forEach { action -> action.code(map) } }
 
 }
@@ -35,7 +35,7 @@ fun String.callAction(vars: Map<String, Any?>) {
  * Current Version: 1.0 (30.04.2019 - 30.04.2019)
  */
 fun String.consume(group: Any, block: (Map<String, Any?>) -> Unit) {
-    actions.getOrPut(this) { mutableListOf() } += DataAction(group, block)
+    actions.getOrPut(this.toLowerCase()) { mutableListOf() } += DataAction(group, block)
 }
 
 /**
