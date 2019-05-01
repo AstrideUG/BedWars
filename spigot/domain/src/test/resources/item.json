@@ -1,0 +1,18 @@
+{
+  "type": "STONE",
+  "amount": 1,
+  "durability": 0,
+  "enchantments": {
+    "PROTECTION_ENVIRONMENTAL": 1
+  },
+  "itemMeta": {
+    "display-name": "§9Waffe",
+    "lore": [
+      "1"
+    ],
+    "item-flags": [
+      "HIDE_UNBREAKABLE"
+    ],
+    "unbreakable": false
+  }
+}
