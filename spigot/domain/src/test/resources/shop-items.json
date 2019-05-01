@@ -1,0 +1,27 @@
+//Map<ShopCategory, Collection<ShopItem>>
+{
+  "categories": [
+    {
+      "display": {
+        "material": "STAINED_CLAY",
+        "name": "§9Baumaterialen"
+      },
+      "items": [
+        {
+          "display": {
+            "material": "STAINED_CLAY"
+          },
+          "price": 1,
+          "moneyType": 0,
+          "items": [
+            {
+              "material": "STAINED_CLAY",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "priority": 0
+    }
+  ]
+}
