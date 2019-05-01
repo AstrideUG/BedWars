@@ -1,0 +1,18 @@
+//List<ItemStack>
+[
+  {
+    "material": "CLAY_BRICK",
+    "amount": 2,
+    "name": "§9Bronze"
+  },
+  {
+    "material": "IRON_INGOT",
+    "amount": 2,
+    "name": "§9Eisen"
+  },
+  {
+    "material": "GOLD_INGOT",
+    "amount": 2,
+    "name": "§9Gold"
+  }
+]
