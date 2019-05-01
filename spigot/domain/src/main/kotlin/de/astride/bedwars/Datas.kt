@@ -7,11 +7,12 @@ package de.astride.bedwars
 import net.darkdevelopers.darkbedrock.darkness.spigot.team.GameTeam
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 /*
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 26.04.2019 00:11.
- * Current Version: 1.0 (26.04.2019 - 26.04.2019)
+ * Current Version: 1.0 (26.04.2019 - 30.04.2019)
  */
 
 /**
@@ -34,3 +35,10 @@ lateinit var teams: Set<GameTeam>
  * Current Version: 1.0 (26.04.2019 - 26.04.2019)
  */
 val Player.team: GameTeam? get() = teams.find { it.players.any { player -> player == this } }
+
+/**
+ * @author Lars Artmann | LartyHD
+ * Created by Lars Artmann | LartyHD on 30.04.2019 02:03.
+ * Current Version: 1.0 (30.04.2019 - 30.04.2019)
+ */
+val moneyTypes: MutableList<ItemStack> = mutableListOf()//TODO: ADD Config
