@@ -5,12 +5,13 @@
 /*
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 25.04.2019 23:56.
- * Current Version: 1.0 (25.04.2019 - 26.04.2019)
+ * Current Version: 1.0 (25.04.2019 - 30.04.2019)
  */
 
 import de.astride.bedwars.functions.javaPlugin
+import de.astride.bedwars.moneyTypes
 import net.darkdevelopers.darkbedrock.darkness.spigot.builder.item.ItemBuilder
-import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors
+import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors.IMPORTANT
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -22,6 +23,11 @@ lateinit var itemSpawners: ItemSpawners
 
 @Suppress("unused") //called by script loader
 fun hooking(engine: ScriptEngine) {
+    moneyTypes += setOf(
+        ItemBuilder(Material.CLAY_BRICK, 2).setName("${IMPORTANT}Bronze").build(),
+        ItemBuilder(Material.IRON_INGOT).setName("${IMPORTANT}Eisen").build(),
+        ItemBuilder(Material.GOLD_INGOT).setName("${IMPORTANT}Gold").build()
+    )
     itemSpawners = ItemSpawners(engine.javaPlugin)
 }
 
@@ -44,23 +50,14 @@ data class DataItemSpawner(
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 25.04.2019 23:58.
- * Current Version: 1.0 (25.04.2019 - 26.04.2019)
+ * Current Version: 1.0 (25.04.2019 - 30.04.2019)
  */
 class ItemSpawners(javaPlugin: JavaPlugin) {
 
     private val spawners: Set<ItemSpawner> = setOf(
-        DataItemSpawner(
-            ItemBuilder(Material.CLAY_BRICK, 2).setName("${Colors.IMPORTANT}Bronze").build(),
-            setOf()
-        ) { true },
-        DataItemSpawner(
-            ItemBuilder(Material.IRON_INGOT).setName("${Colors.IMPORTANT}Eisen").build(),
-            setOf()
-        ) { it == round / 5 || it == round / 3 || it == round / 1 },
-        DataItemSpawner(
-            ItemBuilder(Material.GOLD_INGOT).setName("${Colors.IMPORTANT}Gold").build(),
-            setOf()
-        ) { it == round }
+        DataItemSpawner(moneyTypes[0], setOf()) { true },
+        DataItemSpawner(moneyTypes[1], setOf()) { it == round / 5 || it == round / 3 || it == round / 1 },
+        DataItemSpawner(moneyTypes[2], setOf()) { it == round }
     )
     private val task: Int = Bukkit.getScheduler().scheduleSyncRepeatingTask(javaPlugin, {
         spawners.forEach { spawner ->
