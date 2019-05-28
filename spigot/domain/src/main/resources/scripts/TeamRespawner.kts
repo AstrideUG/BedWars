@@ -3,8 +3,6 @@ import de.astride.bedwars.action.consume
 import de.astride.bedwars.functions.equalsInt
 import de.astride.bedwars.functions.javaPlugin
 import de.astride.bedwars.players
-import de.astride.bedwars.team
-import de.astride.bedwars.teams
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.*
 import net.darkdevelopers.darkbedrock.darkness.spigot.listener.Listener
 import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors.*

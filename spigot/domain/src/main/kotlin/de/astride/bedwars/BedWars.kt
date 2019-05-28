@@ -1,11 +1,11 @@
 package de.astride.bedwars
 
 import com.google.gson.JsonObject
+import de.astride.bedwars.events.LobbyTemplate
 import net.darkdevelopers.darkbedrock.darkness.general.configs.ConfigData
 import net.darkdevelopers.darkbedrock.darkness.general.configs.gson.GsonService.loadAs
 import net.darkdevelopers.darkbedrock.darkness.general.functions.*
 import net.darkdevelopers.darkbedrock.darkness.spigot.plugin.DarkPlugin
-import org.bukkit.Bukkit
 import java.io.File
 import javax.script.ScriptEngineManager
 
@@ -19,8 +19,7 @@ class BedWars : DarkPlugin() {
 
     override fun onLoad(): Unit = onLoad {
         val map = mapOf(
-            "type" to "DarkFrame-Spigot",
-            "description" to description,
+            "type" to "BedWars-Spigot",
             "javaplugin" to this
         )
         performCraftPluginUpdater(map)
@@ -30,9 +29,9 @@ class BedWars : DarkPlugin() {
 
         scripts()
 
+        LobbyTemplate.setup(this)
 
     }
-
 
     private fun scripts() {
         var ns = System.nanoTime()
@@ -54,9 +53,7 @@ class BedWars : DarkPlugin() {
         executeScripts(
             dataFolder.resolve("scripts"), mapOf(
                 "type" to "BedWars-Spigot",
-                "description" to description,
-                "javaplugin" to this,
-                "Bukkit" to Bukkit::class.java
+                "javaplugin" to this
             ),
             before = { file: File, _: String, _: String ->
                 ns = System.nanoTime()

@@ -5,12 +5,12 @@
 import de.astride.bedwars.action.callAction
 import de.astride.bedwars.action.consume
 import de.astride.bedwars.functions.javaPlugin
-import de.astride.bedwars.team
-import net.darkdevelopers.darkbedrock.darkness.spigot.builder.inverntory.InventoryBuilder
+import net.darkdevelopers.darkbedrock.darkness.spigot.builder.inventory.InventoryBuilder
 import net.darkdevelopers.darkbedrock.darkness.spigot.builder.item.LeatherArmorItemBuilder
-import net.darkdevelopers.darkbedrock.darkness.spigot.functions.cancel
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.copy
+import net.darkdevelopers.darkbedrock.darkness.spigot.functions.events.cancel
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.isLeatherArmor
+import net.darkdevelopers.darkbedrock.darkness.spigot.functions.team
 import net.darkdevelopers.darkbedrock.darkness.spigot.listener.Listener
 import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors
 import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Messages
@@ -37,7 +37,7 @@ lateinit var listener: Listener
 @Suppress("unused") //called by script loader
 fun hooking(engine: ScriptEngine) {
 
-    listener = AListener(engine.javaPlugin, mapOf()/*Map<ShopCategory, Collection<ShopItem>> = TODO ADD Config*/)
+    listener = AListener(engine.javaPlugin, mapOf()/*Map<ShopCategory, Collection<ShopItem>> = TODO ADD ConfigHandler*/)
     ActionHandler.register()
 
 }

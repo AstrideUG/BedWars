@@ -26,4 +26,4 @@ val players: Collection<Player> get() = Bukkit.getOnlinePlayers() //TODO: Bukkit
  * Created by Lars Artmann | LartyHD on 30.04.2019 02:03.
  * Current Version: 1.0 (30.04.2019 - 30.04.2019)
  */
-val moneyTypes: MutableList<ItemStack> = mutableListOf()//TODO: ADD Config
+val moneyTypes: MutableList<ItemStack> = mutableListOf()//TODO: ADD ConfigHandler
