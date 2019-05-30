@@ -1,21 +1,32 @@
+/*
+ * © Copyright - Lars Artmann aka. LartyHD 2019.
+ */
+
 package de.astride.bedwars
 
-import com.google.gson.JsonObject
-import de.astride.bedwars.events.LobbyTemplate
-import net.darkdevelopers.darkbedrock.darkness.general.configs.ConfigData
-import net.darkdevelopers.darkbedrock.darkness.general.configs.gson.GsonService.loadAs
-import net.darkdevelopers.darkbedrock.darkness.general.functions.*
+import de.astride.bedwars.modules.Module
+import de.astride.bedwars.modules.instances.*
+import net.darkdevelopers.darkbedrock.darkness.general.functions.performCraftPluginUpdater
 import net.darkdevelopers.darkbedrock.darkness.spigot.plugin.DarkPlugin
-import java.io.File
-import javax.script.ScriptEngineManager
+
 
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 23.04.2019 05:47.
- * Current Version: 1.0 (23.04.2019 - 25.04.2019)
+ * Current Version: 1.0 (23.04.2019 - 30.05.2019)
  */
-@Suppress("unused") //Main class of the plugin
+@Suppress("unused") //Main class of the plugin. Called from Bukkit plugin loader.
 class BedWars : DarkPlugin() {
+
+    private val moduleChain: Collection<Module> = setOf(
+        ConfigModule,
+        GameStatesModule,
+        LogsModule,
+        RespawnerModule,
+        BreakingModule,
+        ShopModule,
+        ItemSpawnerModule
+    )
 
     override fun onLoad(): Unit = onLoad {
         val map = mapOf(
@@ -26,46 +37,23 @@ class BedWars : DarkPlugin() {
     }
 
     override fun onEnable(): Unit = onEnable {
-
-        scripts()
-
-        LobbyTemplate.setup(this)
-
+        moduleChain.forEach { it.install() }
     }
 
-    private fun scripts() {
-        var ns = System.nanoTime()
+    override fun onDisable(): Unit = onDisable {
+        moduleChain.forEach { it.disable() }
+    }
 
-        scriptEngineManager = ScriptEngineManager(javaClass.classLoader)
+    private fun Module.install() {
+        logger.info("Install $this...")
+        setup(this@BedWars)
+        logger.info("Installed $this")
+    }
 
-        logger.info("Load scripts...")
-
-        val configData = ConfigData(dataFolder, "cashed-scripts.json")
-        val jsonObject = loadAs(configData) ?: JsonObject()
-        @Suppress("UNCHECKED_CAST")
-        val hashs = jsonObject.entrySet()
-            .map { it.key to it.value.asString() }
-            .mapNotNull { if (it.second == null) null else it }
-            .toMap() as Map<String, String>
-
-        val newHashs = mutableMapOf<String, String>()
-
-        executeScripts(
-            dataFolder.resolve("scripts"), mapOf(
-                "type" to "BedWars-Spigot",
-                "javaplugin" to this
-            ),
-            before = { file: File, _: String, _: String ->
-                ns = System.nanoTime()
-                logger.info("Load script ${file.name}...")
-            },
-            after = { file: File, input: String, hash: String ->
-                newHashs[file.name] = input.sha256()
-                logger.info("Loaded script ${file.name} (in ${ns}ns)")
-            },
-            hashs = hashs
-        )
-        logger.info("Loaded scripts")
+    private fun Module.disable() {
+        logger.info("Install $this...")
+        setup(this@BedWars)
+        logger.info("Installed $this")
     }
 
 }
