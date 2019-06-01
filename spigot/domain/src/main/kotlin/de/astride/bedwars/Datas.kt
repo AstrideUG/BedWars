@@ -4,9 +4,9 @@
 
 package de.astride.bedwars
 
-import org.bukkit.Bukkit
+import de.astride.bedwars.functions.javaPlugin
+import de.astride.bedwars.teams.spectators
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 /*
  * @author Lars Artmann | LartyHD
@@ -19,11 +19,4 @@ import org.bukkit.inventory.ItemStack
  * Created by Lars Artmann | LartyHD on 26.04.2019 00:11.
  * Current Version: 1.0 (26.04.2019 - 26.04.2019)
  */
-val players: Collection<Player> get() = Bukkit.getOnlinePlayers() //TODO: Bukkit.getOnlinePlayers().size - Saves.getTeamManager().getSpectators().size()
-
-/**
- * @author Lars Artmann | LartyHD
- * Created by Lars Artmann | LartyHD on 30.04.2019 02:03.
- * Current Version: 1.0 (30.04.2019 - 30.04.2019)
- */
-val moneyTypes: MutableList<ItemStack> = mutableListOf()//TODO: ADD ConfigHandler
+val players: Collection<Player> get() = javaPlugin.server.onlinePlayers - spectators

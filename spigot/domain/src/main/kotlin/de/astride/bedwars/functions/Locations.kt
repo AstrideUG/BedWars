@@ -4,8 +4,14 @@
 
 package de.astride.bedwars.functions
 
+import net.darkdevelopers.darkbedrock.darkness.spigot.functions.toBukkitWorld
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.extensions.BukkitLocation
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.extensions.toLocation
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.Location
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.alliases.DefaultBlockLocation
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.alliases.x
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.alliases.y
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.alliases.z
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.locationOf
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.vector.inmutable.Vector3
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.vector.inmutable.extensions.alliases.Vector3D
@@ -60,3 +66,9 @@ fun <O, N> Vector3<O>.map(
     newY: N = y.mapped(),
     newZ: N = z.mapped()
 ): Vector3<N> = vector3Of(newX, newY, newZ)
+
+fun DefaultBlockLocation.toBukkitLocation(): BukkitLocation = BukkitLocation(
+    world.toBukkitWorld(), x.toDouble(), y.toDouble(), z.toDouble()
+)
+
+fun BukkitLocation.toDefaultBlockLocation(): DefaultBlockLocation = toLocation().toLocation3I()
