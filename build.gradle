@@ -93,6 +93,7 @@ subprojects {
     }
 
     compileKotlin {
+        //noinspection GrUnresolvedAccess
         kotlinOptions {
             freeCompilerArgs = ['-Xjsr305=strict', '-Xuse-experimental=kotlinx.serialization.ImplicitReflectionSerializer']
             jvmTarget = '1.8'
@@ -101,6 +102,7 @@ subprojects {
     }
 
     compileTestKotlin {
+        //noinspection GrUnresolvedAccess
         kotlinOptions {
             freeCompilerArgs = ['-Xjsr305=strict', '-Xuse-experimental=kotlinx.serialization.ImplicitReflectionSerializer']
             jvmTarget = '1.8'
