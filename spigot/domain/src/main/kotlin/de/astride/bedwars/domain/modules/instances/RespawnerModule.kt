@@ -12,15 +12,21 @@ import org.bukkit.plugin.Plugin
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 30.05.2019 12:51.
- * Last edit 30.05.2019
+ * Last edit 01.06.2019
  */
 object RespawnerModule : Module {
 
-    override fun setup(plugin: Plugin): Unit = RespawnerEvents.setup(
-        plugin,
-        TeamRespawners()
-    )
+    override val dependencies: Set<Module> = setOf(ConfigModule)
+    override var isRunning: Boolean = false
 
-    override fun reset(): Unit = RespawnerEvents.reset()
+    override fun setup(plugin: Plugin) {
+        super.setup(plugin)
+        RespawnerEvents.setup(plugin, TeamRespawners())
+    }
+
+    override fun reset() {
+        super.reset()
+        RespawnerEvents.reset()
+    }
 
 }

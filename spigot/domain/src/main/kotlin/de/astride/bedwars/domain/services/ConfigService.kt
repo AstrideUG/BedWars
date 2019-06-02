@@ -4,6 +4,7 @@
 
 package de.astride.bedwars.domain.services
 
+import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import de.astride.bedwars.domain.functions.javaPlugin
 import de.astride.bedwars.domain.itemspawner.ItemSpawner
@@ -13,6 +14,7 @@ import de.astride.bedwars.domain.shop.items.ShopItem
 import de.astride.bedwars.domain.teams.respawner.TeamRespawner
 import net.darkdevelopers.darkbedrock.darkness.general.configs.default
 import net.darkdevelopers.darkbedrock.darkness.general.configs.getValue
+import net.darkdevelopers.darkbedrock.darkness.general.functions.JsonArray
 import net.darkdevelopers.darkbedrock.darkness.general.functions.toJsonElement
 import net.darkdevelopers.darkbedrock.darkness.general.functions.toJsonObject
 import net.darkdevelopers.darkbedrock.darkness.general.functions.toNotNull
@@ -23,6 +25,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.ServicesManager
+import java.util.*
 
 /**
  * @author Lars Artmann | LartyHD
@@ -89,11 +92,15 @@ fun registerConfigService(
 ): Unit = servicesManager.register(instance, plugin)
 
 //todo add to darkness
-fun ConfigService.toMap(): JsonObject = javaClass.declaredMethods.mapNotNull { method ->
+fun Any.toConfigMap(): JsonObject = TreeMap(javaClass.declaredMethods.mapNotNull { method ->
     method.isAccessible = true
     val prefix = "get"
     if (!method.name.startsWith(prefix)) return@mapNotNull null
+    val invoke = method.invoke(this)
+    val output = if (invoke is Iterable<*>) JsonArray(invoke.mapNotNull {
+        it?.toConfigMap() ?: JsonNull.INSTANCE
+    }) else invoke.toJsonElement()
     (method.name.drop(prefix.length).decapitalize().replace("[A-Z]".toRegex()) {
         "-${it.value.toLowerCase()}"
-    } to method.invoke(configService).toJsonElement()).toNotNull()
-}.toMap().toJsonObject()
+    } to output).toNotNull()
+}.toMap()).toJsonObject()
