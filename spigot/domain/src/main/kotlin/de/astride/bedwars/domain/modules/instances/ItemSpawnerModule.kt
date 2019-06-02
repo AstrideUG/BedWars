@@ -11,18 +11,22 @@ import org.bukkit.plugin.Plugin
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 30.05.2019 13:43.
- * Last edit 30.05.2019
+ * Last edit 01.06.2019
  */
 object ItemSpawnerModule : Module {
+
+    override val dependencies: Set<Module> = setOf(ConfigModule)
+    override var isRunning: Boolean = false
 
     private var itemSpawners: ItemSpawners? = null
 
     override fun setup(plugin: Plugin) {
-        itemSpawners =
-            ItemSpawners()
+        super.setup(plugin)
+        itemSpawners = ItemSpawners()
     }
 
     override fun reset() {
+        super.reset()
         itemSpawners?.stop()
         itemSpawners = null
     }

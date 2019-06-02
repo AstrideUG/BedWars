@@ -11,7 +11,7 @@ import de.astride.bedwars.domain.modules.Module
 import de.astride.bedwars.domain.players
 import de.astride.bedwars.domain.teams.TeamRespawners
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.*
-import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors
+import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors.*
 import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Messages
 import org.bukkit.ChatColor
 import org.bukkit.Sound
@@ -23,11 +23,14 @@ import org.bukkit.plugin.Plugin
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 30.05.2019 12:09.
- * Last edit 30.05.2019
+ * Last edit 01.06.2019
  */
 object LogsModule : Module {
 
+    override var isRunning: Boolean = false
+
     override fun setup(plugin: Plugin) {
+        super.setup(plugin)
 
         val prefix = "${plugin.name}-"
         team("${prefix}TeamRespawner")
@@ -35,7 +38,10 @@ object LogsModule : Module {
 
     }
 
-    override fun reset(): Unit = this.unregister()
+    override fun reset() {
+        super.reset()
+        unregister()
+    }
 
     private fun team(group: String): Unit = "team.respawner.destroyed.by".consume(group) { vars ->
 
@@ -49,18 +55,18 @@ object LogsModule : Module {
         val chatColor = player.team?.chatColor ?: ChatColor.WHITE
         players.forEach { players ->
             players.sendMessage(
-                "${Messages.PREFIX}${Colors.TEXT}$chatColor${player.displayName}${Colors.TEXT}" +
+                "${Messages.PREFIX}$TEXT$chatColor${player.displayName}$TEXT" +
                         " hat das Bett von " +
-                        "${locationTeam.chatColor}${locationTeam.name}${Colors.TEXT}" +
+                        "${locationTeam.chatColor}${locationTeam.name}$TEXT" +
                         " abgebaut"
             )
             if (players.team == locationTeam) {
-                players.sendTitle("${Colors.IMPORTANT}Deine Respawner")
-                players.sendSubTitle("${Colors.TEXT}wurde abgebaut")
+                players.sendTitle("${IMPORTANT}Deine Respawner")
+                players.sendSubTitle("${TEXT}wurde abgebaut")
                 players.sendTimings(0, 40, 5)
             } else {
-                players.sendTitle("${Colors.IMPORTANT}Die Respawner von")
-                players.sendSubTitle("${locationTeam.chatColor}${locationTeam.name} ${Colors.TEXT}wurde abgebaut")
+                players.sendTitle("${IMPORTANT}Die Respawner von")
+                players.sendSubTitle("${locationTeam.chatColor}${locationTeam.name} ${TEXT}wurde abgebaut")
                 players.sendTimings(0, 40, 5)
             }
             players.sendInGameScoreBoard(teamRespawners)
@@ -82,7 +88,7 @@ object LogsModule : Module {
             val player = vars["player"] as? Player ?: return@consume
             val money = vars["money"] as? ItemStack ?: return@consume
 
-            player.sendMessage("${Messages.PREFIX}${Colors.TEXT}Du besitzt nicht genug ${Colors.IMPORTANT}$money")
+            player.sendMessage("${Messages.PREFIX}${TEXT}Du besitzt nicht genug $IMPORTANT$money")
             player.playSound(player.location, Sound.NOTE_BASS_GUITAR, 1.0f, 1.0f)
 
         }
@@ -90,8 +96,7 @@ object LogsModule : Module {
 
 
     private fun Player.sendInGameScoreBoard(teamRespawners: TeamRespawners) {
-        val displayName =
-            "${Colors.PRIMARY}${Colors.EXTRA}SERVERNAME${Colors.IMPORTANT}${Colors.EXTRA}.${Colors.PRIMARY}${Colors.EXTRA}NET"
+        val displayName = "$PRIMARY${EXTRA}SERVERNAME$IMPORTANT$EXTRA.$PRIMARY${EXTRA}NET"
         val scores = mutableSetOf<Pair<String, Int>>().apply {
             teams.forEach { team ->
                 val s = "${team.chatColor}${team.name}"
