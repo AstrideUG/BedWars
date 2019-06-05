@@ -9,7 +9,6 @@ import de.astride.bedwars.domain.modules.Module
 import de.astride.bedwars.domain.services.ConfigService
 import de.astride.bedwars.domain.services.configService
 import de.astride.bedwars.domain.services.toConfigMap
-import net.darkdevelopers.darkbedrock.darkness.general.configs.gson.GsonService
 import net.darkdevelopers.darkbedrock.darkness.general.functions.load
 import net.darkdevelopers.darkbedrock.darkness.general.functions.toMap
 import org.bukkit.plugin.Plugin
@@ -38,7 +37,7 @@ object RestModule : Module {
         http.service.path("/config") {
             http.get("/show") {
                 response.type("application/json")
-                GsonService.formatJson(configService.toConfigMap())
+                configService.toConfigMap()
             }
             http.post("/reload", "application/json") {
                 val values = request.body().load<JsonObject>().toMap()
