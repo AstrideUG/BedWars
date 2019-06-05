@@ -34,7 +34,7 @@ object RestModule : Module {
         super.setup(plugin)
 
         val http = ignite()
-        http.port(10105)
+        http.port(configService.restApiPort)
         http.get("/") { "You are on the BedWars config REST-API" }
         http.service.path("/config") {
             http.before("/*") {

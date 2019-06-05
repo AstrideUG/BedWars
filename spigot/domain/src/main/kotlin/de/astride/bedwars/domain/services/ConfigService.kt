@@ -28,6 +28,7 @@ import org.bukkit.plugin.ServicesManager
 @Suppress("EXPERIMENTAL_API_USAGE", "EXPERIMENTAL_UNSIGNED_LITERALS")
 class ConfigService(values: Map<String, Any?>) {
 
+    val restApiPort: Int by values.default { 10105 }
     val breakingHandlerWhitelisted by values.default { setOf(Material.DOUBLE_PLANT, Material.LONG_GRASS) }
     val breakingHandlerLocations by values.default { listOf<DefaultBlockLocation>() }
     val teamRespawnersReplacement by values.default { Material.AIR }
