@@ -12,11 +12,11 @@ import de.astride.bedwars.domain.shop.items.ShopItem
 import de.astride.bedwars.domain.teams.respawner.TeamRespawner
 import net.darkdevelopers.darkbedrock.darkness.general.configs.default
 import net.darkdevelopers.darkbedrock.darkness.general.configs.getValue
+import net.darkdevelopers.darkbedrock.darkness.spigot.configs.messages
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.provider
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.register
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.alliases.DefaultBlockLocation
 import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors.TEXT
-import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Messages
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.plugin.Plugin
@@ -63,7 +63,7 @@ class ConfigService(values: Map<String, Any?>) {
     val lobbyMinPlayerToStart by values.default { 2 }
     val lobbyGameName by values.default { "BedWars" }
     val restApiAuthenticatedIps by values.default { setOf("0:0:0:0:0:0:0:1") }
-    val commandStartSuccessesMessage by values.default { "${Messages.PREFIX}${TEXT}Countdown is now @seconds@" }
+    val commandStartSuccessesMessage by values.default { "${messages.prefix}${TEXT}Countdown is now @seconds@" }
 }
 
 /**

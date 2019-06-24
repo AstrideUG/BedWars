@@ -4,15 +4,15 @@
 
 package de.astride.bedwars.domain.modules.instances
 
-import de.astride.bedwars.domain.action.consume
-import de.astride.bedwars.domain.action.unregister
-import de.astride.bedwars.domain.functions.toDefaultBlockLocation
 import de.astride.bedwars.domain.modules.Module
 import de.astride.bedwars.domain.players
 import de.astride.bedwars.domain.teams.TeamRespawners
+import net.darkdevelopers.darkbedrock.darkness.general.action.consume
+import net.darkdevelopers.darkbedrock.darkness.general.action.unregister
+import net.darkdevelopers.darkbedrock.darkness.spigot.configs.messages
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.*
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.to.toDefaultBlockLocation
 import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors.*
-import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Messages
 import org.bukkit.ChatColor
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -55,7 +55,7 @@ object LogsModule : Module {
         val chatColor = player.team?.chatColor ?: ChatColor.WHITE
         players.forEach { players ->
             players.sendMessage(
-                "${Messages.PREFIX}$TEXT$chatColor${player.displayName}$TEXT" +
+                "${messages.prefix}$TEXT$chatColor${player.displayName}$TEXT" +
                         " hat das Bett von " +
                         "${locationTeam.chatColor}${locationTeam.name}$TEXT" +
                         " abgebaut"
@@ -71,8 +71,8 @@ object LogsModule : Module {
             }
             players.sendInGameScoreBoard(teamRespawners)
         }
-        //"${Messages.PREFIX}${Colors.TEXT}Du kannst dein eigenes Bett nicht ${Colors.IMPORTANT}abbauen"
-        //"${Messages.PREFIX}${Colors.TEXT}${playerTeam.chatColor}${player.displayName}${Colors.TEXT} hat das Bett von ${locationTeam.chatColor}${locationTeam.name}${Colors.TEXT} abgebaut"
+        //"${net.darkdevelopers.darkbedrock.darkness.spigot.configs.messages.prefix}${Colors.TEXT}Du kannst dein eigenes Bett nicht ${Colors.IMPORTANT}abbauen"
+        //"${net.darkdevelopers.darkbedrock.darkness.spigot.configs.messages.prefix}${Colors.TEXT}${playerTeam.chatColor}${player.displayName}${Colors.TEXT} hat das Bett von ${locationTeam.chatColor}${locationTeam.name}${Colors.TEXT} abgebaut"
     }
 
     private fun shop(group: String) {
@@ -88,7 +88,7 @@ object LogsModule : Module {
             val player = vars["player"] as? Player ?: return@consume
             val money = vars["money"] as? ItemStack ?: return@consume
 
-            player.sendMessage("${Messages.PREFIX}${TEXT}Du besitzt nicht genug $IMPORTANT$money")
+            player.sendMessage("${messages.prefix}${TEXT}Du besitzt nicht genug $IMPORTANT$money")
             player.playSound(player.location, Sound.NOTE_BASS_GUITAR, 1.0f, 1.0f)
 
         }

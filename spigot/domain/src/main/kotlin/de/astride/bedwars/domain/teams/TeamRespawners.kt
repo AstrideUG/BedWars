@@ -4,13 +4,13 @@
 
 package de.astride.bedwars.domain.teams
 
-import de.astride.bedwars.domain.functions.toBukkitLocation
 import de.astride.bedwars.domain.services.configService
 import de.astride.bedwars.domain.teams.respawner.Respawner
 import de.astride.bedwars.domain.teams.respawner.TeamRespawner
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.team
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.teams
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.alliases.DefaultBlockLocation
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.to.toBukkitLocation
 import net.darkdevelopers.darkbedrock.darkness.spigot.team.GameTeam
 import org.bukkit.Material
 import org.bukkit.entity.Player

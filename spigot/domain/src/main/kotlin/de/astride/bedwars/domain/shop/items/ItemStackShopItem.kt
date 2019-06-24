@@ -4,7 +4,7 @@
 
 package de.astride.bedwars.domain.shop.items
 
-import de.astride.bedwars.domain.action.callAction
+import net.darkdevelopers.darkbedrock.darkness.general.action.callAction
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.copy
 import net.darkdevelopers.darkbedrock.darkness.spigot.utils.count
 import net.darkdevelopers.darkbedrock.darkness.spigot.utils.removeItems
