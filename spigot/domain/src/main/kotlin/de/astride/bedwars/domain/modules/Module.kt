@@ -41,17 +41,27 @@ fun Iterable<Module>.install(plugin: Plugin, logger: Logger = plugin.logger) {
 
 fun Module.install(plugin: Plugin, logger: Logger = plugin.logger) {
     val name: String = this.javaClass.simpleName
-    logger.info("Install $name...")
-    dependencies.forEach { if (!it.isRunning) it.setup(plugin) }
-    if (!isRunning) setup(plugin)
-    logger.info("Installed $name")
+    try {
+        logger.info("Install $name...")
+        dependencies.forEach { if (!it.isRunning) it.setup(plugin) }
+        if (!isRunning) setup(plugin)
+        logger.info("Installed $name")
+    } catch (ex: Exception) {
+        logger.warning("Thrown exception by installing module $name")
+        ex.printStackTrace()
+    }
 }
 
 fun Module.disable(logger: Logger) {
     val name: String = this.javaClass.simpleName
-    logger.info("Disable $name...")
-    if (isRunning) reset()
-    logger.info("Disabled $name")
+    try {
+        logger.info("Disable $name...")
+        if (isRunning) reset()
+        logger.info("Disabled $name")
+    } catch (ex: Exception) {
+        logger.warning("Thrown exception by disabling module $name")
+        ex.printStackTrace()
+    }
 }
 
 fun Iterable<Module>.disable(logger: Logger) {

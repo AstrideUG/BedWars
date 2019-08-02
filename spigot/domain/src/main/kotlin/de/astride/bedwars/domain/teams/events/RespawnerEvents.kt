@@ -4,10 +4,10 @@
 
 package de.astride.bedwars.domain.teams.events
 
-import de.astride.bedwars.domain.action.callAction
-import de.astride.bedwars.domain.functions.toDefaultBlockLocation
 import de.astride.bedwars.domain.teams.TeamRespawners
+import net.darkdevelopers.darkbedrock.darkness.general.action.callAction
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.events.listen
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.to.toDefaultBlockLocation
 import net.darkdevelopers.darkbedrock.darkness.spigot.manager.game.EventsTemplate
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.plugin.Plugin

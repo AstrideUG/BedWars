@@ -24,10 +24,7 @@ class BedWars : DarkPlugin() {
         ConfigModule,
         GameStatesModule,
         LogsModule,
-        RespawnerModule,
-        BreakingModule,
-        ShopModule,
-        ItemSpawnerModule,
+        CommandsModule,
         RestModule
     )
 

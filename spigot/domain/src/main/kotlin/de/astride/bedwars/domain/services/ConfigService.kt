@@ -4,8 +4,6 @@
 
 package de.astride.bedwars.domain.services
 
-import com.google.gson.JsonNull
-import com.google.gson.JsonObject
 import de.astride.bedwars.domain.functions.javaPlugin
 import de.astride.bedwars.domain.itemspawner.ItemSpawner
 import de.astride.bedwars.domain.players
@@ -14,27 +12,26 @@ import de.astride.bedwars.domain.shop.items.ShopItem
 import de.astride.bedwars.domain.teams.respawner.TeamRespawner
 import net.darkdevelopers.darkbedrock.darkness.general.configs.default
 import net.darkdevelopers.darkbedrock.darkness.general.configs.getValue
-import net.darkdevelopers.darkbedrock.darkness.general.functions.JsonArray
-import net.darkdevelopers.darkbedrock.darkness.general.functions.toJsonElement
-import net.darkdevelopers.darkbedrock.darkness.general.functions.toJsonObject
-import net.darkdevelopers.darkbedrock.darkness.general.functions.toNotNull
+import net.darkdevelopers.darkbedrock.darkness.spigot.configs.messages
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.provider
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.register
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.alliases.DefaultBlockLocation
+import net.darkdevelopers.darkbedrock.darkness.spigot.messages.Colors.TEXT
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.ServicesManager
-import java.util.*
 
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 27.05.2019 01:24.
- * Last edit 30.05.2019
+ * Last edit 05.06.2019
  */
 @Suppress("EXPERIMENTAL_API_USAGE", "EXPERIMENTAL_UNSIGNED_LITERALS")
 class ConfigService(values: Map<String, Any?>) {
 
+    val worlds by values.default { setOf("DefaultGameWorld") }
+    val restApiPort: Int by values.default { 10105 }
     val breakingHandlerWhitelisted by values.default { setOf(Material.DOUBLE_PLANT, Material.LONG_GRASS) }
     val breakingHandlerLocations by values.default { listOf<DefaultBlockLocation>() }
     val teamRespawnersReplacement by values.default { Material.AIR }
@@ -65,6 +62,8 @@ class ConfigService(values: Map<String, Any?>) {
     val lobbySpawn by values.default { Location(javaPlugin.server.worlds[0], 0.0, 100.0, 0.0) }
     val lobbyMinPlayerToStart by values.default { 2 }
     val lobbyGameName by values.default { "BedWars" }
+    val restApiAuthenticatedIps by values.default { setOf("0:0:0:0:0:0:0:1") }
+    val commandStartSuccessesMessage by values.default { "${messages.prefix}${TEXT}Countdown is now @seconds@" }
 }
 
 /**
@@ -80,8 +79,7 @@ var configService: ConfigService
     }
 
 fun unregisterConfigService(
-    plugin: Plugin = javaPlugin,
-    servicesManager: ServicesManager = plugin.server.servicesManager,
+    servicesManager: ServicesManager = javaPlugin.server.servicesManager,
     instance: ConfigService? = servicesManager.provider()
 ): Unit = servicesManager.unregister(instance)
 
@@ -90,17 +88,3 @@ fun registerConfigService(
     servicesManager: ServicesManager = plugin.server.servicesManager,
     instance: ConfigService
 ): Unit = servicesManager.register(instance, plugin)
-
-//todo add to darkness
-fun Any.toConfigMap(): JsonObject = TreeMap(javaClass.declaredMethods.mapNotNull { method ->
-    method.isAccessible = true
-    val prefix = "get"
-    if (!method.name.startsWith(prefix)) return@mapNotNull null
-    val invoke = method.invoke(this)
-    val output = if (invoke is Iterable<*>) JsonArray(invoke.mapNotNull {
-        it?.toConfigMap() ?: JsonNull.INSTANCE
-    }) else invoke.toJsonElement()
-    (method.name.drop(prefix.length).decapitalize().replace("[A-Z]".toRegex()) {
-        "-${it.value.toLowerCase()}"
-    } to output).toNotNull()
-}.toMap()).toJsonObject()

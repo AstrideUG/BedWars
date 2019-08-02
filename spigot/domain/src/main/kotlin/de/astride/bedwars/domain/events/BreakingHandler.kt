@@ -4,11 +4,11 @@
 
 package de.astride.bedwars.domain.events
 
-import de.astride.bedwars.domain.functions.toDefaultBlockLocation
 import de.astride.bedwars.domain.services.configService
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.events.cancel
 import net.darkdevelopers.darkbedrock.darkness.spigot.functions.events.listen
 import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.alliases.DefaultBlockLocation
+import net.darkdevelopers.darkbedrock.darkness.spigot.location.location.inmutable.extensions.to.toDefaultBlockLocation
 import net.darkdevelopers.darkbedrock.darkness.spigot.manager.game.EventsTemplate
 import org.bukkit.Material
 import org.bukkit.event.block.BlockBreakEvent

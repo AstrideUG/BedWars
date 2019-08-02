@@ -8,19 +8,20 @@ import com.google.gson.JsonObject
 import de.astride.bedwars.domain.modules.Module
 import de.astride.bedwars.domain.services.ConfigService
 import de.astride.bedwars.domain.services.configService
-import de.astride.bedwars.domain.services.toConfigMap
 import de.astride.bedwars.domain.services.unregisterConfigService
 import net.darkdevelopers.darkbedrock.darkness.general.configs.ConfigData
-import net.darkdevelopers.darkbedrock.darkness.general.configs.gson.GsonService
+import net.darkdevelopers.darkbedrock.darkness.general.configs.toConfigMap
 import net.darkdevelopers.darkbedrock.darkness.general.functions.load
+import net.darkdevelopers.darkbedrock.darkness.general.functions.save
 import net.darkdevelopers.darkbedrock.darkness.general.functions.toMap
 import net.darkdevelopers.darkbedrock.darkness.spigot.configs.initSpigotStaticConfigMappings
+import net.darkdevelopers.darkbedrock.darkness.spigot.configs.resetSpigotStaticConfigMappings
 import org.bukkit.plugin.Plugin
 
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 30.05.2019 12:24.
- * Last edit 01.06.2019
+ * Last edit 05.06.2019
  */
 object ConfigModule : Module {
 
@@ -43,13 +44,10 @@ object ConfigModule : Module {
     override fun reset() {
         super.reset()
 
-        val configData = configData
-        if (configData != null) {
-            GsonService.save(configData, configService.toConfigMap())
-            this.configData = null
-        }
+        configData?.save(configService.toConfigMap())
+        configData = null
 
-        //initSpigotStaticConfigMappings() reset is not possible
+        resetSpigotStaticConfigMappings()
         unregisterConfigService()
 
     }
